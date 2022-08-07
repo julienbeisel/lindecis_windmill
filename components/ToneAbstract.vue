@@ -5,7 +5,7 @@
         <ButtonLaunch />
       </div>
       <div class="h-full basis-1/3"><Cover /></div>
-      <div class="h-full basis-1/3">credits</div>
+      <div id="p5Canvas" class="h-full basis-1/3"><WaveformP5 /></div>
     </div>
   </div>
 </template>
@@ -31,13 +31,9 @@ export default {
   methods: {
     async firstStart() {
       this.tone = await import('tone')
-      this.player = new this.tone.Player().toDestination()
+      this.player = await new this.tone.Player(MAINSONG).toDestination()
       this.player.autostart = true
       this.player.loop = true
-      this.player.loopStart = 1.0
-      await this.player.load(MAINSONG)
-      this.analyzer = new this.tone.Analyser('waveform', 128)
-      this.player.connect(this.analyzer)
     },
   },
 }
