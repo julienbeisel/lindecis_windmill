@@ -4,7 +4,7 @@
     type="button"
     @click="launchPlayer()"
   >
-    Launch
+    Experience it
   </button>
 </template>
 

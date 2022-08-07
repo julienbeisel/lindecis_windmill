@@ -2,10 +2,17 @@
   <div>
     <div class="flex flex-col h-screen w-screen">
       <div class="h-full basis-1/3 text-center mx-auto">
-        <ButtonLaunch />
+        <div class="my-auto h-20">
+          <h1 class="my-6 text-white font-bold text-xl">
+            L'INDECIS - WINDMILL IN MY HEAD
+          </h1>
+          <ButtonLaunch class="mx-auto my-6" />
+        </div>
       </div>
       <div class="h-full basis-1/3"><Cover /></div>
-      <div id="p5Canvas" class="h-full basis-1/3"><WaveformP5 /></div>
+      <div class="h-full basis-1/3">
+        {{ $store.state.highpassValue }}
+      </div>
     </div>
   </div>
 </template>
@@ -31,9 +38,23 @@ export default {
   methods: {
     async firstStart() {
       this.tone = await import('tone')
-      this.player = await new this.tone.Player(MAINSONG).toDestination()
+      this.highpass = new this.tone.Filter(
+        this.highPassValue,
+        'highpass'
+      ).toDestination()
+      this.player = await new this.tone.Player(MAINSONG)
+        .connect(this.highpass)
+        .toDestination()
+
       this.player.autostart = true
       this.player.loop = true
+    },
+  },
+  computed: {
+    highPassValue: {
+      get() {
+        return this.$store.state.highpassValue
+      },
     },
   },
 }

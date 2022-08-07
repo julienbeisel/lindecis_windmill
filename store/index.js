@@ -1,11 +1,13 @@
+const MAXHIGHPASS = 40000
+
 export const state = () => ({
-  tone: null,
+  highpassValue: MAXHIGHPASS,
 })
 export const getters = {}
 
 export const mutations = {
-  loadTone(state, tone) {
-    state.tone = tone
+  setHighpassValue(state, propValue) {
+    state.highpassValue = Math.floor(propValue * MAXHIGHPASS)
   },
 }
 

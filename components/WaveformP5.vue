@@ -8,9 +8,14 @@ export default {
       let speed = 2
       let posX = 0
 
+      const self = this
+
       // NOTE: Set up is here
       p5.setup = (_) => {
-        p5.createCanvas(500, 500)
+        p5.createCanvas(
+          self.$parent.$el.offsetWidth,
+          self.$parent.$el.offsetHeight
+        )
         p5.ellipse(p5.width / 2, p5.height / 2, 500, 500)
       } // NOTE: Draw is here
       p5.draw = (_) => {
