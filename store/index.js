@@ -1,11 +1,11 @@
 export const state = () => ({
-  isToneLoaded: false,
+  tone: null,
 })
 export const getters = {}
 
 export const mutations = {
-  toneLoaded(state) {
-    state.isToneLoaded = true
+  loadTone(state, tone) {
+    state.tone = tone
   },
 }
 
