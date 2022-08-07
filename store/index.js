@@ -1,7 +1,7 @@
-const MAXHIGHPASS = 40000
+const MAXHIGHPASS = 2000
 
 export const state = () => ({
-  highpassValue: MAXHIGHPASS,
+  highpassValue: 0,
 })
 export const getters = {}
 

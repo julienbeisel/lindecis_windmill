@@ -11,7 +11,7 @@
       </div>
       <div class="h-full basis-1/3"><Cover /></div>
       <div class="h-full basis-1/3">
-        {{ $store.state.highpassValue }}
+        WIP: highpass value {{ $store.state.highpassValue }}
       </div>
     </div>
   </div>
@@ -26,6 +26,7 @@ export default {
       tone: null,
       player: null,
       analyzer: null,
+      highpass: null,
     }
   },
   created() {
@@ -38,13 +39,10 @@ export default {
   methods: {
     async firstStart() {
       this.tone = await import('tone')
-      this.highpass = new this.tone.Filter(
-        this.highPassValue,
-        'highpass'
-      ).toDestination()
+      this.highpass = new this.tone.Filter(this.highPassValue, 'highpass')
       this.player = await new this.tone.Player(MAINSONG)
-        .connect(this.highpass)
-        .toDestination()
+      this.player.connect(this.highpass)
+      this.highpass.connect(this.tone.Master)
 
       this.player.autostart = true
       this.player.loop = true
@@ -55,6 +53,13 @@ export default {
       get() {
         return this.$store.state.highpassValue
       },
+    },
+  },
+  watch: {
+    highPassValue(value) {
+      if (this.highpass !== null) {
+        this.highpass.set({ frequency: value })
+      }
     },
   },
 }
