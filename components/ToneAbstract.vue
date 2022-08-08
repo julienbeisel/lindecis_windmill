@@ -19,7 +19,7 @@
           />
         </div>
         <div class="flex flex-row mx-auto w-80">
-          <span class="w-12 my-auto text-rose-200">highpass</span>
+          <span class="w-12 my-auto text-slate-200">highpass</span>
           <ProgressBar
             :progressValue="highpassPropValue"
             class="my-4 mx-auto w-52 h-8"
