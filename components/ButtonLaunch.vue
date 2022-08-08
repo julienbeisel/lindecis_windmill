@@ -1,10 +1,10 @@
 <template>
   <button
-    class="block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out"
+    class="block bg-slate-200 text-slate-700 rounded-md shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-slate-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-slate-400 active:shadow-lg transition duration-150 ease-in-out"
     type="button"
     @click="launchPlayer()"
   >
-    Experience it
+    <font-awesome-icon class="m-2 w-4 h-4" icon="fa-solid fa-headphones" />
   </button>
 </template>
 

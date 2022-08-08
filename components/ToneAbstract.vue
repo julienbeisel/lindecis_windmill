@@ -1,29 +1,44 @@
 <template>
   <div>
-    <div class="flex flex-col h-screen w-9/12 mx-auto">
-      <div class="h-full basis-1/4 text-center mx-auto">
+    <div class="flex flex-col h-screen mx-auto w-96">
+      <div class="my-12 text-left mx-auto">
         <div class="my-auto">
-          <h1 class="my-6 text-white font-bold text-xl">
-            L'INDECIS - WINDMILL IN MY HEAD
+          <h1 class="my-6 text-slate-200 font-bold text-3xl">
+            WINDMILL IN MY HEAD
           </h1>
-          <ButtonLaunch class="mx-auto my-6" />
+          <div class="flex flex-row">
+            <h1 class="my-auto text-slate-200 font-bold text-xl">L'INDECIS</h1>
+            <ButtonLaunch class="mx-6 my-auto" />
+          </div>
         </div>
       </div>
-      <div class="h-full basis-1/3"><Cover /></div>
-      <div class="h-full basis-1/3">
+      <div class=""><Cover /></div>
+      <div class="my-6">
         <div class="flex flex-row mx-auto w-80">
-          <span class="w-12 my-auto text-slate">lowpass</span>
+          <span class="w-12 my-auto text-slate-600 text-xs">lowpass</span>
           <ProgressBar
             :progressValue="lowpassPropValue"
-            class="my-4 mx-auto w-52 h-8"
+            class="my-2 mx-auto w-52 h-4"
           />
         </div>
         <div class="flex flex-row mx-auto w-80">
-          <span class="w-12 my-auto text-slate-200">highpass</span>
+          <span class="w-12 my-auto text-slate-600 text-xs">highpass</span>
           <ProgressBar
             :progressValue="highpassPropValue"
-            class="my-4 mx-auto w-52 h-8"
+            class="my-2 mx-auto w-52 h-4"
           />
+        </div>
+
+        <div class="grid grid-cols-3 mt-32 mx-auto w-96">
+          <div class="col-span-1 mx-auto text-slate-200 font-bold text-xl">
+            STREAM
+          </div>
+          <div class="col-span-1 mx-auto text-slate-200 font-bold text-xl">
+            VINYLS
+          </div>
+          <div class="col-span-1 mx-auto text-slate-200 font-bold text-xl">
+            SOCIALS
+          </div>
         </div>
       </div>
     </div>
