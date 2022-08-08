@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="flex flex-col h-screen w-screen">
-      <div class="h-full basis-1/3 text-center mx-auto">
-        <div class="my-auto h-20">
+    <div class="flex flex-col h-screen w-9/12 mx-auto">
+      <div class="h-full basis-1/4 text-center mx-auto">
+        <div class="my-auto">
           <h1 class="my-6 text-white font-bold text-xl">
             L'INDECIS - WINDMILL IN MY HEAD
           </h1>
@@ -11,7 +11,20 @@
       </div>
       <div class="h-full basis-1/3"><Cover /></div>
       <div class="h-full basis-1/3">
-        WIP: highpass value {{ $store.state.highpassValue }}
+        <div class="flex flex-row mx-auto w-80">
+          <span class="w-12 my-auto text-slate">lowpass</span>
+          <ProgressBar
+            :progressValue="lowpassPropValue"
+            class="my-4 mx-auto w-52 h-8"
+          />
+        </div>
+        <div class="flex flex-row mx-auto w-80">
+          <span class="w-12 my-auto text-rose-200">highpass</span>
+          <ProgressBar
+            :progressValue="highpassPropValue"
+            class="my-4 mx-auto w-52 h-8"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -27,6 +40,7 @@ export default {
       player: null,
       analyzer: null,
       highpass: null,
+      lowpass: null,
     }
   },
   created() {
@@ -40,9 +54,11 @@ export default {
     async firstStart() {
       this.tone = await import('tone')
       this.highpass = new this.tone.Filter(this.highPassValue, 'highpass')
+      this.lowpass = new this.tone.Filter(this.lowpassValue, 'lowpass')
       this.player = await new this.tone.Player(MAINSONG)
       this.player.connect(this.highpass)
-      this.highpass.connect(this.tone.Master)
+      this.highpass.connect(this.lowpass)
+      this.lowpass.connect(this.tone.Master)
 
       this.player.autostart = true
       this.player.loop = true
@@ -54,11 +70,31 @@ export default {
         return this.$store.state.highpassValue
       },
     },
+    lowpassValue: {
+      get() {
+        return this.$store.state.lowpassValue
+      },
+    },
+    highpassPropValue: {
+      get() {
+        return 100 * this.$store.state.highpassPropValue
+      },
+    },
+    lowpassPropValue: {
+      get() {
+        return 100 * this.$store.state.lowpassPropValue
+      },
+    },
   },
   watch: {
     highPassValue(value) {
       if (this.highpass !== null) {
         this.highpass.set({ frequency: value })
+      }
+    },
+    lowpassValue(value) {
+      if (this.lowpass !== null) {
+        this.lowpass.set({ frequency: value })
       }
     },
   },

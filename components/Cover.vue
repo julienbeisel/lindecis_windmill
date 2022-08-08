@@ -43,6 +43,7 @@ export default {
       console.log(y)
 
       this.$store.commit('setHighpassValue', x)
+      this.$store.commit('setLowpassValue', y)
     },
   },
 }
