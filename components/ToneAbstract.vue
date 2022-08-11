@@ -1,45 +1,48 @@
 <template>
   <div>
-    <div class="flex flex-col h-screen mx-auto w-96">
-      <div class="my-12 text-left mx-auto">
-        <div class="my-auto">
-          <h1 class="my-6 text-slate-200 font-bold text-3xl">
-            WINDMILL IN MY HEAD
-          </h1>
-          <div class="flex flex-row">
-            <h1 class="my-auto text-slate-200 font-bold text-xl">L'INDECIS</h1>
-            <ButtonLaunch class="mx-6 my-auto" />
+    <div class="grid grid-cols-12 h-screen max-w-xl m-auto">
+      <div class="col-span-8 col-start-3">
+        <div><img src="~/assets/windmill.png" /></div>
+        <div class="grid grid-cols-3">
+          <div class="col-span-1 h-60 mx-6">
+            <ProgressBar :progressValue="100 - highpassPropValue" />
           </div>
+          <div class="col-span-1 h-60 mx-6">
+            <ProgressBar :progressValue="100 - lowpassPropValue" />
+          </div>
+          <div class="col-span-1 h-60 mx-6">
+            <ProgressBar :progressValue="100 - highpassPropValue" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 w-full mt-6">
+          <font-awesome-icon
+            class="col-span-1 h-60 mx-auto"
+            icon="fa-solid fa-drum"
+          />
+          <font-awesome-icon
+            class="col-span-1 h-60 mx-auto"
+            icon="fa-solid fa-drum"
+          />
+          <font-awesome-icon
+            class="col-span-1 h-60 mx-auto"
+            icon="fa-solid fa-drum"
+          />
+        </div>
+        <div class="grid grid-cols-3 mt-12 w-full gap-x-10 gap-y-10">
+          <Pad
+            v-for="item in [
+              require('~/assets/drums.png'),
+              require('~/assets/piano.png'),
+              require('~/assets/bell.png'),
+            ]"
+            :key="item"
+            :imgSrc="item"
+            class="col-span-1 mx-auto content-center w-4/5"
+          />
         </div>
       </div>
-      <div class=""><Cover /></div>
-      <div class="my-6">
-        <div class="flex flex-row mx-auto w-80">
-          <span class="w-12 my-auto text-slate-600 text-xs">lowpass</span>
-          <ProgressBar
-            :progressValue="lowpassPropValue"
-            class="my-2 mx-auto w-52 h-4"
-          />
-        </div>
-        <div class="flex flex-row mx-auto w-80">
-          <span class="w-12 my-auto text-slate-600 text-xs">highpass</span>
-          <ProgressBar
-            :progressValue="highpassPropValue"
-            class="my-2 mx-auto w-52 h-4"
-          />
-        </div>
-
-        <div class="grid grid-cols-3 mt-32 mx-auto w-96">
-          <div class="col-span-1 mx-auto text-slate-200 font-bold text-xl">
-            STREAM
-          </div>
-          <div class="col-span-1 mx-auto text-slate-200 font-bold text-xl">
-            VINYLS
-          </div>
-          <div class="col-span-1 mx-auto text-slate-200 font-bold text-xl">
-            SOCIALS
-          </div>
-        </div>
+      <div class="col-span-1 mt-4">
+        <img src="~/assets/question.png" />
       </div>
     </div>
   </div>

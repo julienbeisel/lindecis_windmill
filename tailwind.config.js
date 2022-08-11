@@ -6,6 +6,10 @@ module.exports = {
     extend: {
       colors: {
         slate: colors.blueGray,
+        gray: colors.gray,
+      },
+      padding: {
+        '4/5': '80%',
       },
     },
   },

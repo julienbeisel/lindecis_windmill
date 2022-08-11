@@ -2,9 +2,9 @@ const MAXHIGHPASS = 2000
 const MAXLOWPASS = 4000
 export const state = () => ({
   highpassValue: 0,
-  highpassPropValue: 0,
+  highpassPropValue: 0.5,
   lowpassValue: 0,
-  lowpassPropValue: 0,
+  lowpassPropValue: 0.3,
 })
 export const getters = {}
 

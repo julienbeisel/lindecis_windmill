@@ -1,8 +1,10 @@
 <template>
-  <div class="relative bg-slate-600 rounded-md overflow-hidden z-10 opacity-50">
+  <div
+    class="relative w-full h-full bg-gray-500 rounded-md overflow-hidden z-10 opacity-100"
+  >
     <div
-      :style="{ width: progressValue + '%' }"
-      class="absolute inset-0 z-15 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-slate-400"
+      :style="{ height: progressValue + '%' }"
+      class="absolute inset-0 z-15 shadow-none whitespace-nowrap text-white justify-center bg-gray-200"
     >
       {{ progressText }}
     </div>
@@ -20,7 +22,7 @@ export default {
       type: Number,
     },
     progressText: {
-      default: '',
+      default: ' ',
       type: String,
     },
   },
