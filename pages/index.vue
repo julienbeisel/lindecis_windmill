@@ -11,6 +11,10 @@ export default {
 }
 </script>
 <style>
+body {
+  overflow: hidden;
+  height: 100vh;
+}
 #bg-img {
   /* Add the blur effect */
   object-fit: cover;
