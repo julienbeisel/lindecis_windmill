@@ -114,29 +114,25 @@ export default {
         loop: true,
         autostart: true,
       })
-        .connect(this.drumsVolume)
-        .sync()
-        .start(0)
 
-      this.drums.volume = -Infinity
+      this.drums.connect(this.drumsVolume).sync()
+
       this.piano = await new this.tone.Player({
         url: PIANO,
         loop: true,
         autostart: true,
       })
-        .connect(this.pianoVolume)
-        .sync()
-        .start(0)
+
+      this.piano.connect(this.pianoVolume).sync()
+
       this.bells = await new this.tone.Player({
         url: BELLS,
         loop: true,
         autostart: true,
       })
-        .connect(this.bellsVolume)
-        .sync()
-        .start(0)
-
-      this.tone.Transport.start()
+      this.bells.connect(this.bellsVolume).sync()
+      await this.tone.start()
+      await this.tone.Transport.start()
     },
   },
 }
