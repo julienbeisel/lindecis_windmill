@@ -6,6 +6,37 @@
           <img src="~/assets/windmill.png" /> Clique ici avant de tester le
           reste, ce bouton sera remplacé par la page d'accueil<ButtonLaunch />
         </div>
+        <div>
+          Volume
+          <vue-slider
+            v-if="currentSelection == 'drums'"
+            v-model="drumsVolumeValue"
+            direction="btt"
+            :min="-50"
+            :max="0"
+            :height="heightSlider"
+            @dragging="(evt) => updateDrumsVolume(evt)"
+          />
+          <vue-slider
+            v-else-if="currentSelection == 'piano'"
+            v-model="pianoVolumeValue"
+            direction="btt"
+            :min="-50"
+            :max="0"
+            :height="heightSlider"
+            @dragging="(evt) => updatePianoVolume(evt)"
+          />
+          <vue-slider
+            v-else-if="currentSelection == 'bells'"
+            v-model="bellsVolumeValue"
+            direction="btt"
+            :min="-50"
+            :max="0"
+            :height="heightSlider"
+            @dragging="(evt) => updateBellsVolume(evt)"
+          />
+          <div v-else class="h-300">Select a pad</div>
+        </div>
 
         <div class="grid grid-cols-3 mt-12 w-full gap-x-10 gap-y-10">
           <Pad
@@ -42,6 +73,9 @@
 </template>
 
 <script>
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
+
 const BELLS =
   'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/1_bells_c.mp3'
 const DRUMS =
@@ -51,19 +85,24 @@ const PIANO =
   'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/2_piano_c.mp3'
 export default {
   name: 'ToneAbstract',
+  components: {
+    VueSlider,
+  },
   data() {
     return {
       tone: null,
       player: null,
+      currentSelection: null,
+      heightSlider: 150,
       drums: null,
       drumsVolume: null,
-      drumsVolumeValue: -Infinity,
+      drumsVolumeValue: -50,
       piano: null,
       pianoVolume: null,
-      pianoVolumeValue: -Infinity,
+      pianoVolumeValue: -50,
       bells: null,
       bellsVolume: null,
-      bellsVolumeValue: -Infinity,
+      bellsVolumeValue: -50,
     }
   },
   created() {
@@ -74,27 +113,25 @@ export default {
     })
 
     this.$nuxt.$on('launch-drums', () => {
-      this.drumsVolumeValue = this.switchVolume(this.drumsVolumeValue)
-      this.drumsVolume.set({ volume: this.drumsVolumeValue })
+      this.currentSelection = 'drums'
     })
-
-    this.$nuxt.$on('launch-bells', () => {
-      this.bellsVolumeValue = this.switchVolume(this.bellsVolumeValue)
-      this.bellsVolume.set({ volume: this.bellsVolumeValue })
-    })
-
     this.$nuxt.$on('launch-piano', () => {
-      this.pianoVolumeValue = this.switchVolume(this.pianoVolumeValue)
-      this.pianoVolume.set({ volume: this.pianoVolumeValue })
+      this.currentSelection = 'piano'
+    })
+    this.$nuxt.$on('launch-bells', () => {
+      this.currentSelection = 'bells'
     })
   },
 
   methods: {
-    switchVolume(volume) {
-      if (volume === 0) {
-        return -Infinity
-      }
-      return 0
+    updateDrumsVolume() {
+      this.drumsVolume.set({ volume: this.drumsVolumeValue })
+    },
+    updatePianoVolume() {
+      this.pianoVolume.set({ volume: this.pianoVolumeValue })
+    },
+    updateBellsVolume() {
+      this.bellsVolume.set({ volume: this.bellsVolumeValue })
     },
     async firstStart() {
       this.tone = await import('tone')
