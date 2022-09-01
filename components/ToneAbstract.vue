@@ -3,66 +3,55 @@
     <div class="grid grid-cols-12 h-screen max-w-xl m-auto">
       <div class="col-span-8 col-start-3">
         <div>
-          <img src="~/assets/windmill.png" /> Clique ici avant de tester le
-          reste, ce bouton sera remplacé par la page d'accueil<ButtonLaunch />
-        </div>
-        <div>
-          Volume
-          <vue-slider
-            v-if="currentSelection == 'drums'"
-            v-model="drumsVolumeValue"
-            direction="btt"
-            :min="-50"
-            :max="0"
-            :height="heightSlider"
-            @dragging="(evt) => updateDrumsVolume(evt)"
-          />
-          <vue-slider
-            v-else-if="currentSelection == 'piano'"
-            v-model="pianoVolumeValue"
-            direction="btt"
-            :min="-50"
-            :max="0"
-            :height="heightSlider"
-            @dragging="(evt) => updatePianoVolume(evt)"
-          />
-          <vue-slider
-            v-else-if="currentSelection == 'bells'"
-            v-model="bellsVolumeValue"
-            direction="btt"
-            :min="-50"
-            :max="0"
-            :height="heightSlider"
-            @dragging="(evt) => updateBellsVolume(evt)"
-          />
-          <div v-else class="h-300">Select a pad</div>
+          <img src="~/assets/windmill.png" />
         </div>
 
         <div class="grid grid-cols-3 mt-12 w-full gap-x-10 gap-y-10">
-          <Pad
-            v-for="item in [
-              [
-                require('~/assets/drums.png'),
-                'launch-drums',
-                this.drumsVolumeValue === -Infinity,
-              ],
-              [
-                require('~/assets/piano.png'),
-                'launch-piano',
-                this.pianoVolumeValue === -Infinity,
-              ],
-              [
-                require('~/assets/bell.png'),
-                'launch-bells',
-                this.bellsVolumeValue === -Infinity,
-              ],
-            ]"
-            :key="item[0]"
-            :imgSrc="item[0]"
-            :evtEmit="item[1]"
-            :isMuted="item[2]"
-            class="col-span-1 mx-auto content-center w-4/5"
-          />
+          <div class="flex flex-row">
+            <Pad
+              :imgSrc="require('~/assets/drums.png')"
+              :evtEmit="'launch-drums'"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+            <vue-slider
+              v-model="drumsVolumeValue"
+              direction="btt"
+              :min="-50"
+              :max="0"
+              :width="20"
+              @dragging="(evt) => updateDrumsVolume(evt)"
+            />
+          </div>
+          <div class="flex flex-row">
+            <Pad
+              :imgSrc="require('~/assets/piano.png')"
+              :evtEmit="'launch-piano'"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+            <vue-slider
+              v-model="pianoVolumeValue"
+              direction="btt"
+              :min="-50"
+              :max="0"
+              :width="20"
+              @dragging="(evt) => updatePianoVolume(evt)"
+            />
+          </div>
+          <div class="flex flex-row">
+            <Pad
+              :imgSrc="require('~/assets/bell.png')"
+              :evtEmit="'launch-bells'"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+            <vue-slider
+              v-model="bellsVolumeValue"
+              direction="btt"
+              :min="-50"
+              :max="0"
+              :width="20"
+              @dragging="(evt) => updateBellsVolume(evt)"
+            />
+          </div>
         </div>
       </div>
       <div class="col-span-1 mt-4">
@@ -105,7 +94,8 @@ export default {
       bellsVolumeValue: -50,
     }
   },
-  created() {
+  beforeMount() {
+    console.log('ok')
     this.$nuxt.$on('launch-synth', () => {
       if (this.tone === null) {
         this.firstStart()
@@ -134,6 +124,7 @@ export default {
       this.bellsVolume.set({ volume: this.bellsVolumeValue })
     },
     async firstStart() {
+      console.log('yes')
       this.tone = await import('tone')
 
       this.drumsVolume = await new this.tone.Volume(
