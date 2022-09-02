@@ -6,8 +6,8 @@
           <img src="~/assets/windmill.png" />
         </div>
 
-        <div class="grid grid-cols-3 mt-12 w-full gap-x-10 gap-y-10">
-          <div class="flex flex-row">
+        <div class="grid grid-cols-3 mt-12 w-full">
+          <div :class="padClass">
             <Pad
               :imgSrc="require('~/assets/drums.png')"
               :evtEmit="'launch-drums'"
@@ -22,7 +22,7 @@
               @dragging="(evt) => updateDrumsVolume(evt)"
             />
           </div>
-          <div class="flex flex-row">
+          <div :class="padClass">
             <Pad
               :imgSrc="require('~/assets/piano.png')"
               :evtEmit="'launch-piano'"
@@ -37,7 +37,7 @@
               @dragging="(evt) => updatePianoVolume(evt)"
             />
           </div>
-          <div class="flex flex-row">
+          <div :class="padClass">
             <Pad
               :imgSrc="require('~/assets/bell.png')"
               :evtEmit="'launch-bells'"
@@ -92,6 +92,7 @@ export default {
       bells: null,
       bellsVolume: null,
       bellsVolumeValue: -50,
+      padClass: 'flex flex-row col-span-1',
     }
   },
   beforeMount() {
