@@ -6,7 +6,106 @@
           <img src="~/assets/windmill.png" />
         </div>
 
-        <div class="grid grid-cols-3 mt-12 w-full">
+        <div v-if="currentSelection == 'drums'" :class="subContainerClass">
+          <div class="col-span-3 m-auto text-white">
+            {{ currentSelection }} effects
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Bitcrusher</div>
+            <vue-slider
+              v-model="drumsBitcrusherWet"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateDrumsBitcrusherWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="drumsReverbWet"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateDrumsReverbWet(evt)"
+            />
+          </div>
+        </div>
+
+        <div v-if="currentSelection == 'piano'" :class="subContainerClass">
+          <div class="col-span-3 m-auto text-white">
+            {{ currentSelection }} effects
+          </div>
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Bitcrusher</div>
+            <vue-slider
+              v-model="pianoBitcrusherWet"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updatePianoBitcrusherWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="pianoReverbWet"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updatePianoReverbWet(evt)"
+            />
+          </div>
+        </div>
+
+        <div v-if="currentSelection == 'bells'" :class="subContainerClass">
+          <div class="col-span-3 m-auto text-white">
+            {{ currentSelection }} effects
+          </div>
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Bitcrusher</div>
+            <vue-slider
+              v-model="bellsBitcrusherWet"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateBellsBitcrusherWet(evt)"
+            />
+          </div>
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="bellsReverbWet"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateBellsReverbWet(evt)"
+            />
+          </div>
+        </div>
+
+        <div :class="subContainerClass">
           <div :class="padClass">
             <Pad
               :imgSrc="require('~/assets/drums.png')"
@@ -81,18 +180,33 @@ export default {
     return {
       tone: null,
       player: null,
-      currentSelection: null,
+      currentSelection: 'drums',
       heightSlider: 150,
       drums: null,
       drumsVolume: null,
       drumsVolumeValue: -50,
+      drumsBitcrusher: null,
+      drumsBitcrusherWet: 0,
+      drumsRevers: null,
+      drumsReverbWet: 0,
       piano: null,
       pianoVolume: null,
       pianoVolumeValue: -50,
+      pianoBitcrusher: null,
+      pianoBitcrusherWet: 0,
+      pianoReverb: null,
+      pianoReverbWet: 0,
       bells: null,
       bellsVolume: null,
       bellsVolumeValue: -50,
+      bellsBitcrusher: null,
+      bellsBitcrusherWet: 0,
+      bellsReverb: null,
+      bellsReverbWet: 0,
       padClass: 'flex flex-row col-span-1',
+      effectClass: 'flex flex-col col-span-1',
+      subContainerClass: 'grid grid-cols-3 mt-12 w-full',
+      labelEffectClass: 'text-white',
     }
   },
   beforeMount() {
@@ -115,28 +229,67 @@ export default {
   },
 
   methods: {
+    // volume
     updateDrumsVolume() {
       this.drumsVolume.set({ volume: this.drumsVolumeValue })
+      this.$nuxt.$emit('launch-drums')
     },
     updatePianoVolume() {
       this.pianoVolume.set({ volume: this.pianoVolumeValue })
+      this.$nuxt.$emit('launch-piano')
     },
     updateBellsVolume() {
       this.bellsVolume.set({ volume: this.bellsVolumeValue })
+      this.$nuxt.$emit('launch-bells')
+    },
+    // bitcrusher
+    updateDrumsBitcrusherWet() {
+      this.drumsBitcrusher.set({ wet: this.drumsBitcrusherWet })
+    },
+    updatePianoBitcrusherWet() {
+      this.pianoBitcrusher.set({ wet: this.pianoBitcrusherWet })
+    },
+    updateBellsBitcrusherWet() {
+      this.bellsBitcrusher.set({ wet: this.bellsBitcrusherWet })
+    },
+    // reverb
+    updateDrumsReverbWet() {
+      this.drumsReverb.set({ wet: this.drumsReverbWet })
+    },
+    updatePianoReverbWet() {
+      this.pianoReverb.set({ wet: this.pianoReverbWet })
+    },
+    updateBellsReverbWet() {
+      this.bellsReverb.set({ wet: this.bellsReverbWet })
     },
     async firstStart() {
-      console.log('yes')
       this.tone = await import('tone')
+      const bitcrusherDefaultValue = 4
+      const reverbDefaultValue = 20
 
-      this.drumsVolume = await new this.tone.Volume(
-        this.drumsVolumeValue
-      ).toDestination()
-      this.pianoVolume = await new this.tone.Volume(
-        this.pianoVolumeValue
-      ).toDestination()
-      this.bellsVolume = await new this.tone.Volume(
-        this.bellsVolumeValue
-      ).toDestination()
+      // volume
+
+      this.drumsVolume = await new this.tone.Volume(this.drumsVolumeValue)
+      this.pianoVolume = await new this.tone.Volume(this.pianoVolumeValue)
+      this.bellsVolume = await new this.tone.Volume(this.bellsVolumeValue)
+
+      // bitcrusher
+
+      this.drumsBitcrusher = new this.tone.BitCrusher(bitcrusherDefaultValue)
+      this.updateDrumsBitcrusherWet()
+      this.pianoBitcrusher = new this.tone.BitCrusher(bitcrusherDefaultValue)
+      this.updatePianoBitcrusherWet()
+      this.bellsBitcrusher = new this.tone.BitCrusher(bitcrusherDefaultValue)
+      this.updateBellsBitcrusherWet()
+
+      // Reverb
+
+      this.drumsReverb = new this.tone.Reverb(reverbDefaultValue)
+      this.updateDrumsReverbWet()
+      this.pianoReverb = new this.tone.Reverb(reverbDefaultValue)
+      this.updatePianoReverbWet()
+      this.bellsReverb = new this.tone.Reverb(reverbDefaultValue)
+      this.updateBellsReverbWet()
 
       this.drums = await new this.tone.Player({
         url: DRUMS,
@@ -144,7 +297,10 @@ export default {
         autostart: true,
       })
 
-      this.drums.connect(this.drumsVolume).sync()
+      this.drums.connect(this.drumsBitcrusher)
+      this.drumsBitcrusher.connect(this.drumsReverb)
+      this.drumsReverb.connect(this.drumsVolume)
+      this.drumsVolume.toDestination()
 
       this.piano = await new this.tone.Player({
         url: PIANO,
@@ -152,14 +308,21 @@ export default {
         autostart: true,
       })
 
-      this.piano.connect(this.pianoVolume).sync()
+      this.piano.connect(this.pianoBitcrusher)
+      this.pianoBitcrusher.connect(this.pianoReverb)
+      this.pianoReverb.connect(this.pianoVolume)
+      this.pianoVolume.toDestination()
 
       this.bells = await new this.tone.Player({
         url: BELLS,
         loop: true,
         autostart: true,
       })
-      this.bells.connect(this.bellsVolume).sync()
+      this.bells.connect(this.bellsBitcrusher)
+      this.bellsBitcrusher.connect(this.bellsReverb)
+      this.bellsReverb.connect(this.bellsVolume)
+      this.bellsVolume.toDestination()
+
       await this.tone.start()
       await this.tone.Transport.start()
     },
