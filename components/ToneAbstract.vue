@@ -6,111 +6,6 @@
           <img src="~/assets/windmill.png" />
         </div>
 
-        <div v-if="currentSelection == 'drums'" :class="subContainerClass">
-          <div :class="effectTrackNameClass">
-            {{ currentSelection }} effects
-          </div>
-
-          <div :class="effectClass">
-            <div :class="labelEffectClass">Bitcrusher</div>
-            <vue-slider
-              v-model="drumsBitcrusherWet"
-              :class="sliderEffectClass"
-              direction="btt"
-              :min="0"
-              :max="1"
-              :interval="0.1"
-              :width="20"
-              :height="50"
-              @dragging="(evt) => updateDrumsBitcrusherWet(evt)"
-            />
-          </div>
-
-          <div :class="effectClass">
-            <div :class="labelEffectClass">Reverb</div>
-            <vue-slider
-              v-model="drumsReverbWet"
-              :class="sliderEffectClass"
-              direction="btt"
-              :min="0"
-              :max="1"
-              :interval="0.1"
-              :width="20"
-              :height="50"
-              @dragging="(evt) => updateDrumsReverbWet(evt)"
-            />
-          </div>
-        </div>
-
-        <div v-if="currentSelection == 'piano'" :class="subContainerClass">
-          <div :class="effectTrackNameClass">
-            {{ currentSelection }} effects
-          </div>
-          <div :class="effectClass">
-            <div :class="labelEffectClass">Bitcrusher</div>
-            <vue-slider
-              v-model="pianoBitcrusherWet"
-              :class="sliderEffectClass"
-              direction="btt"
-              :min="0"
-              :max="1"
-              :interval="0.1"
-              :width="20"
-              :height="50"
-              @dragging="(evt) => updatePianoBitcrusherWet(evt)"
-            />
-          </div>
-
-          <div :class="effectClass">
-            <div :class="labelEffectClass">Reverb</div>
-            <vue-slider
-              v-model="pianoReverbWet"
-              :class="sliderEffectClass"
-              direction="btt"
-              :min="0"
-              :max="1"
-              :interval="0.1"
-              :width="20"
-              :height="50"
-              @dragging="(evt) => updatePianoReverbWet(evt)"
-            />
-          </div>
-        </div>
-
-        <div v-if="currentSelection == 'bells'" :class="subContainerClass">
-          <div :class="effectTrackNameClass">
-            {{ currentSelection }} effects
-          </div>
-          <div :class="effectClass">
-            <div :class="labelEffectClass">Bitcrusher</div>
-            <vue-slider
-              v-model="bellsBitcrusherWet"
-              :class="sliderEffectClass"
-              direction="btt"
-              :min="0"
-              :max="1"
-              :interval="0.1"
-              :width="20"
-              :height="50"
-              @dragging="(evt) => updateBellsBitcrusherWet(evt)"
-            />
-          </div>
-          <div :class="effectClass">
-            <div :class="labelEffectClass">Reverb</div>
-            <vue-slider
-              v-model="bellsReverbWet"
-              :class="sliderEffectClass"
-              direction="btt"
-              :min="0"
-              :max="1"
-              :interval="0.1"
-              :width="20"
-              :height="50"
-              @dragging="(evt) => updateBellsReverbWet(evt)"
-            />
-          </div>
-        </div>
-
         <div :class="subContainerClass">
           <div :class="padClass">
             <Pad
@@ -254,7 +149,7 @@ const PIANO =
 const RHODES =
   'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/5_rhodes_c.mp3'
 const GUITAR =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/4_guitar_c.mp3'
+  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/4_gtr_c.mp3'
 const STRING =
   'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/6_strings_c.mp3'
 const TEXTURES =
@@ -308,11 +203,11 @@ export default {
       toypiano: null,
       toypianoVolume: null,
       toypianoVolumeValue: -50,
-      padClass: 'flex flex-row col-span-1',
+      padClass: 'flex flex-row col-span-1 m-2',
       effectClass: 'flex flex-col col-span-1',
       effectTrackNameClass:
         'col-span-3 m-auto text-white font-bold bg-gray-600 p-2 rounded-lg',
-      subContainerClass: 'grid grid-cols-3 mt-12 w-full',
+      subContainerClass: 'grid grid-cols-4 mt-12 w-full',
       labelEffectClass: 'text-white p-1 m-4 text-center',
       sliderEffectClass: 'm-auto',
     }
@@ -442,7 +337,7 @@ export default {
         url: DRUMS,
         loop: true,
         autostart: true,
-      })
+      }).sync()
 
       this.drums.connect(this.drumsBitcrusher)
       this.drumsBitcrusher.connect(this.drumsReverb)
@@ -453,7 +348,7 @@ export default {
         url: PIANO,
         loop: true,
         autostart: true,
-      })
+      }).sync()
 
       this.piano.connect(this.pianoBitcrusher)
       this.pianoBitcrusher.connect(this.pianoReverb)
@@ -464,7 +359,8 @@ export default {
         url: BELLS,
         loop: true,
         autostart: true,
-      })
+      }).sync()
+
       this.bells.connect(this.bellsBitcrusher)
       this.bellsBitcrusher.connect(this.bellsReverb)
       this.bellsReverb.connect(this.bellsVolume)
@@ -474,7 +370,8 @@ export default {
         url: GUITAR,
         loop: true,
         autostart: true,
-      })
+      }).sync()
+
       this.gtr.connect(this.gtrVolume)
       this.gtrVolume.toDestination()
 
@@ -482,7 +379,8 @@ export default {
         url: RHODES,
         loop: true,
         autostart: true,
-      })
+      }).sync()
+
       this.rhodes.connect(this.rhodesVolume)
       this.rhodesVolume.toDestination()
 
@@ -490,7 +388,8 @@ export default {
         url: STRING,
         loop: true,
         autostart: true,
-      })
+      }).sync()
+
       this.strings.connect(this.stringsVolume)
       this.stringsVolume.toDestination()
 
@@ -498,7 +397,8 @@ export default {
         url: TEXTURES,
         loop: true,
         autostart: true,
-      })
+      }).sync()
+
       this.textures.connect(this.texturesVolume)
       this.texturesVolume.toDestination()
 
@@ -506,7 +406,8 @@ export default {
         url: TOYPIANO,
         loop: true,
         autostart: true,
-      })
+      }).sync()
+
       this.toypiano.connect(this.toypianoVolume)
       this.toypianoVolume.toDestination()
 
