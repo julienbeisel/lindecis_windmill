@@ -140,8 +140,7 @@
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 
-const BELLS =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/1_bells_c.mp3'
+const BELLS = 'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/2_bells.aac'
 const DRUMS =
   'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/3_drums_c.mp3'
 const PIANO =
@@ -335,8 +334,6 @@ export default {
 
       this.drums = await new this.tone.Player({
         url: DRUMS,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.drums.connect(this.drumsBitcrusher)
@@ -346,8 +343,6 @@ export default {
 
       this.piano = await new this.tone.Player({
         url: PIANO,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.piano.connect(this.pianoBitcrusher)
@@ -357,8 +352,6 @@ export default {
 
       this.bells = await new this.tone.Player({
         url: BELLS,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.bells.connect(this.bellsBitcrusher)
@@ -368,8 +361,6 @@ export default {
 
       this.gtr = await new this.tone.Player({
         url: GUITAR,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.gtr.connect(this.gtrVolume)
@@ -377,8 +368,6 @@ export default {
 
       this.rhodes = await new this.tone.Player({
         url: RHODES,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.rhodes.connect(this.rhodesVolume)
@@ -386,8 +375,6 @@ export default {
 
       this.strings = await new this.tone.Player({
         url: STRING,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.strings.connect(this.stringsVolume)
@@ -395,8 +382,6 @@ export default {
 
       this.textures = await new this.tone.Player({
         url: TEXTURES,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.textures.connect(this.texturesVolume)
@@ -404,15 +389,29 @@ export default {
 
       this.toypiano = await new this.tone.Player({
         url: TOYPIANO,
-        loop: true,
-        autostart: true,
       }).sync()
 
       this.toypiano.connect(this.toypianoVolume)
       this.toypianoVolume.toDestination()
 
-      await this.tone.start()
-      await this.tone.Transport.start()
+      this.tone.loaded().then(() => {
+        this.tone.Transport.bpm.value = 94
+        this.tone.Transport.loopStart = '0m'
+        this.tone.Transport.loopEnd = '1m'
+        this.tone.Transport.loop = true
+
+        this.bells.start(0)
+        this.drums.start(0)
+        this.piano.start(0)
+        this.toypiano.start(0)
+        this.textures.start(0)
+        this.strings.start(0)
+        this.gtr.start(0)
+
+        this.tone.Transport.start()
+        this.tone.start()
+        console.log('ok')
+      })
     },
   },
 }
