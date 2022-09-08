@@ -1,134 +1,184 @@
 <template>
   <div>
-    <div class="grid grid-cols-12 h-screen max-w-xl m-auto">
+    <div class="grid grid-cols-12 h-screen max-w-xl lg:max-w-3xl m-auto">
       <div class="col-span-8 col-start-3">
         <div>
           <img src="~/assets/windmill.png" />
         </div>
 
+        <div v-if="currentSelection == 'bells'" :class="effectContainerClass">
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="bellsReverbWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateBellsReverbWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Bitcrusher</div>
+            <vue-slider
+              v-model="bellsBitcrusherWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateBellsBitcrusherWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Vibrato</div>
+            <vue-slider
+              v-model="bellsVibratoWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateBellsVibratoWet(evt)"
+            />
+          </div>
+        </div>
+
+        <div v-if="currentSelection == 'piano'" :class="effectContainerClass">
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Phaser</div>
+            <vue-slider
+              v-model="pianoPhaserWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updatePianoPhaserWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Vibrato</div>
+            <vue-slider
+              v-model="pianoVibratoWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updatePianoVibratoWet(evt)"
+            />
+          </div>
+        </div>
+
         <div :class="subContainerClass">
           <div :class="padClass">
             <Pad
-              :imgSrc="require('~/assets/drums.png')"
               :evtEmit="'launch-drums'"
+              :imgSrc="require('~/assets/drums.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
             <vue-slider
               v-model="drumsVolumeValue"
-              direction="btt"
-              :min="-50"
               :max="0"
+              :min="-50"
               :width="20"
+              direction="btt"
               @dragging="(evt) => updateDrumsVolume(evt)"
             />
           </div>
           <div :class="padClass">
             <Pad
-              :imgSrc="require('~/assets/piano.png')"
               :evtEmit="'launch-piano'"
+              :imgSrc="require('~/assets/piano.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
             <vue-slider
               v-model="pianoVolumeValue"
-              direction="btt"
-              :min="-50"
               :max="0"
+              :min="-50"
               :width="20"
+              direction="btt"
               @dragging="(evt) => updatePianoVolume(evt)"
             />
           </div>
           <div :class="padClass">
             <Pad
-              :imgSrc="require('~/assets/bell.png')"
               :evtEmit="'launch-bells'"
+              :imgSrc="require('~/assets/bell.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
             <vue-slider
               v-model="bellsVolumeValue"
-              direction="btt"
-              :min="-50"
               :max="0"
+              :min="-50"
               :width="20"
+              direction="btt"
               @dragging="(evt) => updateBellsVolume(evt)"
             />
           </div>
           <div :class="padClass">
             <Pad
-              :imgSrc="require('~/assets/question.png')"
               :evtEmit="'launch-gtr'"
+              :imgSrc="require('~/assets/guitar.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
             <vue-slider
               v-model="gtrVolumeValue"
-              direction="btt"
-              :min="-50"
               :max="0"
+              :min="-50"
               :width="20"
+              direction="btt"
               @dragging="(evt) => updateGtrVolume(evt)"
             />
           </div>
           <div :class="padClass">
             <Pad
-              :imgSrc="require('~/assets/question.png')"
               :evtEmit="'launch-rhodes'"
+              :imgSrc="require('~/assets/rhodes.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
             <vue-slider
               v-model="rhodesVolumeValue"
-              direction="btt"
-              :min="-50"
               :max="0"
+              :min="-50"
               :width="20"
+              direction="btt"
               @dragging="(evt) => updateRhodesVolume(evt)"
             />
           </div>
           <div :class="padClass">
             <Pad
-              :imgSrc="require('~/assets/question.png')"
               :evtEmit="'launch-strings'"
+              :imgSrc="require('~/assets/violin.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
             <vue-slider
               v-model="stringsVolumeValue"
-              direction="btt"
-              :min="-50"
               :max="0"
+              :min="-50"
               :width="20"
+              direction="btt"
               @dragging="(evt) => updateStringsVolume(evt)"
-            />
-          </div>
-          <div :class="padClass">
-            <Pad
-              :imgSrc="require('~/assets/question.png')"
-              :evtEmit="'launch-textures'"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="texturesVolumeValue"
-              direction="btt"
-              :min="-50"
-              :max="0"
-              :width="20"
-              @dragging="(evt) => updateTexturesVolume(evt)"
-            />
-          </div>
-          <div :class="padClass">
-            <Pad
-              :imgSrc="require('~/assets/question.png')"
-              :evtEmit="'launch-toypiano'"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="toypianoVolumeValue"
-              direction="btt"
-              :min="-50"
-              :max="0"
-              :width="20"
-              @dragging="(evt) => updateToypianoVolume(evt)"
             />
           </div>
         </div>
       </div>
+
       <div class="col-span-1 mt-4">
         <img src="~/assets/question.png" />
       </div>
@@ -141,20 +191,18 @@ import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 
 const BELLS = 'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/2_bells.aac'
-const DRUMS =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/3_drums_c.mp3'
+const DRUMS = 'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/8_drums.aac'
 const PIANO =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/2_piano_c.mp3'
+  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/4_doublepiano.aac'
 const RHODES =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/5_rhodes_c.mp3'
-const GUITAR =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/4_gtr_c.mp3'
+  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/6_rhodes.aac'
+const GUITAR = 'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/5_gtr.aac'
 const STRING =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/6_strings_c.mp3'
+  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/7_strings.aac'
 const TEXTURES =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/7_textures_c.mp3'
+  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/1_textures.aac'
 const TOYPIANO =
-  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/8_toypiano_c.mp3'
+  'https://lindecis-windmill.s3.eu-west-3.amazonaws.com/3_toypiano.aac'
 export default {
   name: 'ToneAbstract',
   components: {
@@ -176,17 +224,19 @@ export default {
       piano: null,
       pianoVolume: null,
       pianoVolumeValue: -50,
-      pianoBitcrusher: null,
-      pianoBitcrusherWet: 0,
-      pianoReverb: null,
-      pianoReverbWet: 0,
+      pianoPhaser: null,
+      pianoPhaserWet: 0,
+      pianoVibrato: null,
+      pianoVibratoWet: 0,
       bells: null,
       bellsVolume: null,
       bellsVolumeValue: -50,
-      bellsBitcrusher: null,
-      bellsBitcrusherWet: 0,
       bellsReverb: null,
       bellsReverbWet: 0,
+      bellsBitcrusher: null,
+      bellsBitcrusherWet: 0,
+      bellsVibrato: null,
+      bellsVibratoWet: 0,
       gtr: null,
       gtrVolume: null,
       gtrVolumeValue: -50,
@@ -198,15 +248,18 @@ export default {
       stringsVolumeValue: -50,
       textures: null,
       texturesVolume: null,
-      texturesVolumeValue: -50,
+      texturesVolumeValue: -5,
       toypiano: null,
       toypianoVolume: null,
       toypianoVolumeValue: -50,
-      padClass: 'flex flex-row col-span-1 m-2',
+      toypianoPhaser: null,
+      toypianoVibrato: null,
+      padClass: 'flex flex-row col-span-1 m-2 lg:m-6',
       effectClass: 'flex flex-col col-span-1',
       effectTrackNameClass:
         'col-span-3 m-auto text-white font-bold bg-gray-600 p-2 rounded-lg',
-      subContainerClass: 'grid grid-cols-4 mt-12 w-full',
+      subContainerClass: 'grid grid-cols-3 mt-12 w-full',
+      effectContainerClass: 'grid grid-cols-3 w-full',
       labelEffectClass: 'text-white p-1 m-4 text-center',
       sliderEffectClass: 'm-auto',
     }
@@ -246,58 +299,63 @@ export default {
 
   methods: {
     // volume
+    volumeSetter(vol) {
+      if (vol === -50) {
+        return -Infinity
+      }
+      return vol
+    },
     updateDrumsVolume() {
-      this.drumsVolume.set({ volume: this.drumsVolumeValue })
+      this.drumsVolume.set({ volume: this.volumeSetter(this.drumsVolumeValue) })
       this.$nuxt.$emit('launch-drums')
     },
     updatePianoVolume() {
-      this.pianoVolume.set({ volume: this.pianoVolumeValue })
+      this.pianoVolume.set({ volume: this.volumeSetter(this.pianoVolumeValue) })
+      this.toypianoVolume.set({
+        volume: this.volumeSetter(this.toypianoVolumeValue),
+      })
       this.$nuxt.$emit('launch-piano')
     },
     updateBellsVolume() {
-      this.bellsVolume.set({ volume: this.bellsVolumeValue })
+      this.bellsVolume.set({ volume: this.volumeSetter(this.bellsVolumeValue) })
       this.$nuxt.$emit('launch-bells')
     },
     updateGtrVolume() {
-      this.gtrVolume.set({ volume: this.gtrVolumeValue })
+      this.gtrVolume.set({ volume: this.volumeSetter(this.gtrVolumeValue) })
       this.$nuxt.$emit('launch-gtr')
     },
     updateRhodesVolume() {
-      this.rhodesVolume.set({ volume: this.rhodesVolumeValue })
+      this.rhodesVolume.set({
+        volume: this.volumeSetter(this.rhodesVolumeValue),
+      })
       this.$nuxt.$emit('launch-rhodes')
     },
     updateStringsVolume() {
-      this.stringsVolume.set({ volume: this.stringsVolumeValue })
+      this.stringsVolume.set({
+        volume: this.volumeSetter(this.stringsVolumeValue),
+      })
       this.$nuxt.$emit('launch-strings')
     },
-    updateTexturesVolume() {
-      this.texturesVolume.set({ volume: this.texturesVolumeValue })
-      this.$nuxt.$emit('launch-textures')
-    },
-    updateToypianoVolume() {
-      this.toypianoVolume.set({ volume: this.toypianoVolumeValue })
-      this.$nuxt.$emit('launch-toypiano')
-    },
-    // bitcrusher
-    updateDrumsBitcrusherWet() {
-      this.drumsBitcrusher.set({ wet: this.drumsBitcrusherWet })
-    },
-    updatePianoBitcrusherWet() {
-      this.pianoBitcrusher.set({ wet: this.pianoBitcrusherWet })
+    // bells
+    updateBellsReverbWet() {
+      this.bellsReverb.set({ wet: this.bellsReverbWet })
     },
     updateBellsBitcrusherWet() {
       this.bellsBitcrusher.set({ wet: this.bellsBitcrusherWet })
     },
-    // reverb
-    updateDrumsReverbWet() {
-      this.drumsReverb.set({ wet: this.drumsReverbWet })
+    updateBellsVibratoWet() {
+      this.bellsVibrato.set({ wet: this.bellsVibratoWet })
     },
-    updatePianoReverbWet() {
-      this.pianoReverb.set({ wet: this.pianoReverbWet })
+    // piano
+    updatePianoPhaserWet() {
+      this.pianoPhaser.set({ wet: this.pianoPhaserWet })
+      this.toypianoPhaser.set({ wet: this.pianoPhaserWet })
     },
-    updateBellsReverbWet() {
-      this.bellsReverb.set({ wet: this.bellsReverbWet })
+    updatePianoVibratoWet() {
+      this.pianoVibrato.set({ wet: this.pianoVibratoWet })
+      this.toypianoVibrato.set({ wet: this.pianoVibratoWet })
     },
+
     async firstStart() {
       this.tone = await import('tone')
       const bitcrusherDefaultValue = 4
@@ -314,40 +372,38 @@ export default {
       this.texturesVolume = await new this.tone.Volume(this.texturesVolumeValue)
       this.toypianoVolume = await new this.tone.Volume(this.toypianoVolumeValue)
 
-      // bitcrusher
+      // bells
 
-      this.drumsBitcrusher = new this.tone.BitCrusher(bitcrusherDefaultValue)
-      this.updateDrumsBitcrusherWet()
-      this.pianoBitcrusher = new this.tone.BitCrusher(bitcrusherDefaultValue)
-      this.updatePianoBitcrusherWet()
       this.bellsBitcrusher = new this.tone.BitCrusher(bitcrusherDefaultValue)
       this.updateBellsBitcrusherWet()
-
-      // Reverb
-
-      this.drumsReverb = new this.tone.Reverb(reverbDefaultValue)
-      this.updateDrumsReverbWet()
-      this.pianoReverb = new this.tone.Reverb(reverbDefaultValue)
-      this.updatePianoReverbWet()
       this.bellsReverb = new this.tone.Reverb(reverbDefaultValue)
       this.updateBellsReverbWet()
+      this.bellsVibrato = new this.tone.Vibrato()
+      this.updateBellsVibratoWet()
+
+      // piano
+
+      this.pianoVibrato = new this.tone.Vibrato()
+      this.toypianoVibrato = new this.tone.Vibrato()
+      this.updatePianoVibratoWet()
+      this.pianoPhaser = new this.tone.Phaser()
+      this.toypianoPhaser = new this.tone.Vibrato()
+      this.updatePianoPhaserWet()
 
       this.drums = await new this.tone.Player({
         url: DRUMS,
       }).sync()
 
-      this.drums.connect(this.drumsBitcrusher)
-      this.drumsBitcrusher.connect(this.drumsReverb)
-      this.drumsReverb.connect(this.drumsVolume)
+      this.drums.connect(this.drumsVolume)
       this.drumsVolume.toDestination()
 
       this.piano = await new this.tone.Player({
         url: PIANO,
       }).sync()
 
-      this.piano.connect(this.pianoBitcrusher)
-      this.pianoBitcrusher.connect(this.pianoReverb)
-      this.pianoReverb.connect(this.pianoVolume)
+      this.piano.connect(this.pianoPhaser)
+      this.pianoPhaser.connect(this.pianoVibrato)
+      this.pianoVibrato.connect(this.pianoVolume)
       this.pianoVolume.toDestination()
 
       this.bells = await new this.tone.Player({
@@ -355,7 +411,8 @@ export default {
       }).sync()
 
       this.bells.connect(this.bellsBitcrusher)
-      this.bellsBitcrusher.connect(this.bellsReverb)
+      this.bellsBitcrusher.connect(this.bellsVibrato)
+      this.bellsVibrato.connect(this.bellsReverb)
       this.bellsReverb.connect(this.bellsVolume)
       this.bellsVolume.toDestination()
 
@@ -391,13 +448,15 @@ export default {
         url: TOYPIANO,
       }).sync()
 
-      this.toypiano.connect(this.toypianoVolume)
+      this.toypiano.connect(this.toypianoPhaser)
+      this.toypianoPhaser.connect(this.toypianoVibrato)
+      this.toypianoVibrato.connect(this.toypianoVolume)
       this.toypianoVolume.toDestination()
 
       this.tone.loaded().then(() => {
         this.tone.Transport.bpm.value = 94
         this.tone.Transport.loopStart = '0m'
-        this.tone.Transport.loopEnd = '1m'
+        this.tone.Transport.loopEnd = '8m'
         this.tone.Transport.loop = true
 
         this.bells.start(0)
@@ -407,10 +466,11 @@ export default {
         this.textures.start(0)
         this.strings.start(0)
         this.gtr.start(0)
+        this.rhodes.start(0)
 
         this.tone.Transport.start()
         this.tone.start()
-        console.log('ok')
+        console.log('ToneJS loaded')
       })
     },
   },
