@@ -1,14 +1,77 @@
 <template>
   <div>
     <div class="grid grid-cols-12 h-screen max-w-xl lg:max-w-3xl m-auto">
-      <div class="col-span-8 col-start-3">
-        <div>
+      <div
+        v-if="!toneLoaded"
+        class="m-auto justify-center content-center text-center"
+      >
+        Loading audio experience...
+      </div>
+      <div v-if="toneLoaded" class="col-span-8 col-start-3">
+        <div class="h-1/4">
           <img src="~/assets/windmill.png" />
+        </div>
+
+        <div :class="subContainerClass">
+          <div :class="padClass">
+            <Pad
+              :evtEmit="'launch-drums'"
+              :imgSrc="require('~/assets/drums.png')"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+          </div>
+          <div :class="padClass">
+            <Pad
+              :evtEmit="'launch-piano'"
+              :imgSrc="require('~/assets/piano.png')"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+          </div>
+          <div :class="padClass">
+            <Pad
+              :evtEmit="'launch-bells'"
+              :imgSrc="require('~/assets/bell.png')"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+          </div>
+          <div :class="padClass">
+            <Pad
+              :evtEmit="'launch-gtr'"
+              :imgSrc="require('~/assets/guitar.png')"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+          </div>
+          <div :class="padClass">
+            <Pad
+              :evtEmit="'launch-rhodes'"
+              :imgSrc="require('~/assets/rhodes.png')"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+          </div>
+          <div :class="padClass">
+            <Pad
+              :evtEmit="'launch-strings'"
+              :imgSrc="require('~/assets/violin.png')"
+              class="col-span-1 mx-auto content-center w-4/5"
+            />
+          </div>
         </div>
 
         <div v-if="currentSelection == 'bells'" :class="effectContainerClass">
           <div :class="effectClass">
-            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="bellsVolumeValue"
+              :class="sliderEffectClass"
+              :max="0"
+              :min="-28"
+              :width="20"
+              :height="50"
+              direction="btt"
+              @dragging="(evt) => updateBellsVolume(evt)"
+            />
+            <div :class="labelEffectClass">Volume</div>
+          </div>
+          <div :class="effectClass">
             <vue-slider
               v-model="bellsReverbWet"
               :class="sliderEffectClass"
@@ -20,10 +83,10 @@
               :height="50"
               @dragging="(evt) => updateBellsReverbWet(evt)"
             />
+            <div :class="labelEffectClass">Reverb</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Bitcrusher</div>
             <vue-slider
               v-model="bellsBitcrusherWet"
               :class="sliderEffectClass"
@@ -35,10 +98,10 @@
               :height="50"
               @dragging="(evt) => updateBellsBitcrusherWet(evt)"
             />
+            <div :class="labelEffectClass">Bitcrusher</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Vibrato</div>
             <vue-slider
               v-model="bellsVibratoWet"
               :class="sliderEffectClass"
@@ -50,12 +113,26 @@
               :height="50"
               @dragging="(evt) => updateBellsVibratoWet(evt)"
             />
+            <div :class="labelEffectClass">Vibrato</div>
           </div>
         </div>
 
         <div v-if="currentSelection == 'piano'" :class="effectContainerClass">
           <div :class="effectClass">
-            <div :class="labelEffectClass">Piano/Toypiano</div>
+            <vue-slider
+              v-model="pianoVolumeValue"
+              :class="sliderEffectClass"
+              :max="0"
+              :min="-28"
+              :width="20"
+              :height="50"
+              direction="btt"
+              @dragging="(evt) => updatePianoVolume(evt)"
+            />
+            <div :class="labelEffectClass">Volume</div>
+          </div>
+
+          <div :class="effectClass">
             <vue-slider
               v-model="propPianoToypiano"
               :class="sliderEffectClass"
@@ -67,9 +144,9 @@
               :height="50"
               @dragging="(evt) => updatePianoVolume(evt)"
             />
+            <div :class="labelEffectClass">Piano/Toypiano</div>
           </div>
           <div :class="effectClass">
-            <div :class="labelEffectClass">Phaser</div>
             <vue-slider
               v-model="pianoPhaserWet"
               :class="sliderEffectClass"
@@ -81,10 +158,10 @@
               :height="50"
               @dragging="(evt) => updatePianoPhaserWet(evt)"
             />
+            <div :class="labelEffectClass">Phaser</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Vibrato</div>
             <vue-slider
               v-model="pianoVibratoWet"
               :class="sliderEffectClass"
@@ -96,12 +173,26 @@
               :height="50"
               @dragging="(evt) => updatePianoVibratoWet(evt)"
             />
+            <div :class="labelEffectClass">Vibrato</div>
           </div>
         </div>
 
         <div v-if="currentSelection == 'gtr'" :class="effectContainerClass">
           <div :class="effectClass">
-            <div :class="labelEffectClass">Delay</div>
+            <vue-slider
+              v-model="gtrVolumeValue"
+              :class="sliderEffectClass"
+              :max="0"
+              :min="-28"
+              :width="20"
+              :height="50"
+              direction="btt"
+              @dragging="(evt) => updateGtrVolume(evt)"
+            />
+            <div :class="labelEffectClass">Volume</div>
+          </div>
+
+          <div :class="effectClass">
             <vue-slider
               v-model="gtrDelayWet"
               :class="sliderEffectClass"
@@ -113,10 +204,10 @@
               :height="50"
               @dragging="(evt) => updateGtrDelayWet(evt)"
             />
+            <div :class="labelEffectClass">Delay</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Reverb</div>
             <vue-slider
               v-model="gtrReverbWet"
               :class="sliderEffectClass"
@@ -128,10 +219,10 @@
               :height="50"
               @dragging="(evt) => updateGtrReverbWet(evt)"
             />
+            <div :class="labelEffectClass">Reverb</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Vibrato</div>
             <vue-slider
               v-model="gtrVibratoWet"
               :class="sliderEffectClass"
@@ -143,12 +234,26 @@
               :height="50"
               @dragging="(evt) => updateGtrVibratoWet(evt)"
             />
+            <div :class="labelEffectClass">Vibrato</div>
           </div>
         </div>
 
         <div v-if="currentSelection == 'rhodes'" :class="effectContainerClass">
           <div :class="effectClass">
-            <div :class="labelEffectClass">Delay</div>
+            <vue-slider
+              v-model="rhodesVolumeValue"
+              :class="sliderEffectClass"
+              :max="0"
+              :min="-28"
+              :width="20"
+              :height="50"
+              direction="btt"
+              @dragging="(evt) => updateRhodesVolume(evt)"
+            />
+            <div :class="labelEffectClass">Volume</div>
+          </div>
+
+          <div :class="effectClass">
             <vue-slider
               v-model="rhodesPingPongDelayWet"
               :class="sliderEffectClass"
@@ -160,10 +265,10 @@
               :height="50"
               @dragging="(evt) => updateRhodesPingPongDelayWet(evt)"
             />
+            <div :class="labelEffectClass">Delay</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Filter</div>
             <vue-slider
               v-model="rhodesFilterWet"
               :class="sliderEffectClass"
@@ -175,10 +280,10 @@
               :height="50"
               @dragging="(evt) => updateRhodesFilterWet(evt)"
             />
+            <div :class="labelEffectClass">Filter</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Vibrato</div>
             <vue-slider
               v-model="rhodesVibratoWet"
               :class="sliderEffectClass"
@@ -190,12 +295,26 @@
               :height="50"
               @dragging="(evt) => updateRhodesVibratoWet(evt)"
             />
+            <div :class="labelEffectClass">Vibrato</div>
           </div>
         </div>
 
         <div v-if="currentSelection == 'strings'" :class="effectContainerClass">
           <div :class="effectClass">
-            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="stringsVolumeValue"
+              :class="sliderEffectClass"
+              :max="0"
+              :min="-28"
+              :width="20"
+              :height="50"
+              direction="btt"
+              @dragging="(evt) => updateStringsVolume(evt)"
+            />
+            <div :class="labelEffectClass">Volume</div>
+          </div>
+
+          <div :class="effectClass">
             <vue-slider
               v-model="stringsReverbWet"
               :class="sliderEffectClass"
@@ -207,10 +326,10 @@
               :height="50"
               @dragging="(evt) => updateStringsReverbWet(evt)"
             />
+            <div :class="labelEffectClass">Reverb</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Bitcrusher</div>
             <vue-slider
               v-model="stringsBitcrusherWet"
               :class="sliderEffectClass"
@@ -222,10 +341,10 @@
               :height="50"
               @dragging="(evt) => updateStringsBitcrusherWet(evt)"
             />
+            <div :class="labelEffectClass">Bitcrusher</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Vibrato</div>
             <vue-slider
               v-model="stringsVibratoWet"
               :class="sliderEffectClass"
@@ -237,12 +356,26 @@
               :height="50"
               @dragging="(evt) => updateStringsVibratoWet(evt)"
             />
+            <div :class="labelEffectClass">Vibrato</div>
           </div>
         </div>
 
         <div v-if="currentSelection == 'drums'" :class="effectContainerClass">
           <div :class="effectClass">
-            <div :class="labelEffectClass">Frequency</div>
+            <vue-slider
+              v-model="drumsVolumeValue"
+              :class="sliderEffectClass"
+              :max="0"
+              :min="-28"
+              :width="20"
+              :height="50"
+              direction="btt"
+              @dragging="(evt) => updateDrumsVolume(evt)"
+            />
+            <div :class="labelEffectClass">Volume</div>
+          </div>
+
+          <div :class="effectClass">
             <vue-slider
               v-model="drumsFrequencyShifterWet"
               :class="sliderEffectClass"
@@ -254,10 +387,10 @@
               :height="50"
               @dragging="(evt) => updateDrumsFrequencyShifterWet(evt)"
             />
+            <div :class="labelEffectClass">Frequency</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Autofilter</div>
             <vue-slider
               v-model="drumsAutofilterWet"
               :class="sliderEffectClass"
@@ -269,10 +402,10 @@
               :height="50"
               @dragging="(evt) => updateDrumsAutofilterWet(evt)"
             />
+            <div :class="labelEffectClass">Autofilter</div>
           </div>
 
           <div :class="effectClass">
-            <div :class="labelEffectClass">Autowah</div>
             <vue-slider
               v-model="drumsAutowahWet"
               :class="sliderEffectClass"
@@ -284,99 +417,7 @@
               :height="50"
               @dragging="(evt) => updateDrumsAutowahWet(evt)"
             />
-          </div>
-        </div>
-
-        <div :class="subContainerClass">
-          <div :class="padClass">
-            <Pad
-              :evtEmit="'launch-drums'"
-              :imgSrc="require('~/assets/drums.png')"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="drumsVolumeValue"
-              :max="0"
-              :min="-28"
-              :width="20"
-              direction="btt"
-              @dragging="(evt) => updateDrumsVolume(evt)"
-            />
-          </div>
-          <div :class="padClass">
-            <Pad
-              :evtEmit="'launch-piano'"
-              :imgSrc="require('~/assets/piano.png')"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="pianoVolumeValue"
-              :max="0"
-              :min="-28"
-              :width="20"
-              direction="btt"
-              @dragging="(evt) => updatePianoVolume(evt)"
-            />
-          </div>
-          <div :class="padClass">
-            <Pad
-              :evtEmit="'launch-bells'"
-              :imgSrc="require('~/assets/bell.png')"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="bellsVolumeValue"
-              :max="0"
-              :min="-28"
-              :width="20"
-              direction="btt"
-              @dragging="(evt) => updateBellsVolume(evt)"
-            />
-          </div>
-          <div :class="padClass">
-            <Pad
-              :evtEmit="'launch-gtr'"
-              :imgSrc="require('~/assets/guitar.png')"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="gtrVolumeValue"
-              :max="0"
-              :min="-28"
-              :width="20"
-              direction="btt"
-              @dragging="(evt) => updateGtrVolume(evt)"
-            />
-          </div>
-          <div :class="padClass">
-            <Pad
-              :evtEmit="'launch-rhodes'"
-              :imgSrc="require('~/assets/rhodes.png')"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="rhodesVolumeValue"
-              :max="0"
-              :min="-28"
-              :width="20"
-              direction="btt"
-              @dragging="(evt) => updateRhodesVolume(evt)"
-            />
-          </div>
-          <div :class="padClass">
-            <Pad
-              :evtEmit="'launch-strings'"
-              :imgSrc="require('~/assets/violin.png')"
-              class="col-span-1 mx-auto content-center w-4/5"
-            />
-            <vue-slider
-              v-model="stringsVolumeValue"
-              :max="0"
-              :min="-28"
-              :width="20"
-              direction="btt"
-              @dragging="(evt) => updateStringsVolume(evt)"
-            />
+            <div :class="labelEffectClass">Autowah</div>
           </div>
         </div>
       </div>
@@ -413,6 +454,7 @@ export default {
   data() {
     return {
       tone: null,
+      toneLoaded: false,
       player: null,
       currentSelection: 'drums',
       heightSlider: 150,
@@ -481,9 +523,9 @@ export default {
       effectClass: 'flex flex-col col-span-1',
       effectTrackNameClass:
         'col-span-3 m-auto text-white font-bold bg-gray-600 p-2 rounded-lg',
-      subContainerClass: 'grid grid-cols-3 mt-12 w-full',
-      effectContainerClass: 'grid grid-cols-3 w-full',
-      labelEffectClass: 'text-white p-1 m-4 text-center',
+      subContainerClass: 'grid grid-cols-3 h-1/2 w-full',
+      effectContainerClass: 'grid grid-cols-4 w-full h-1/4',
+      labelEffectClass: 'text-white text-sm p-1 m-4 text-center',
       sliderEffectClass: 'm-auto',
     }
   },
@@ -496,27 +538,41 @@ export default {
 
     this.$nuxt.$on('launch-drums', () => {
       this.currentSelection = 'drums'
+      this.drumsVolumeValue = this.volumeActivation(this.drumsVolumeValue)
+      this.updateDrumsVolume()
     })
     this.$nuxt.$on('launch-piano', () => {
       this.currentSelection = 'piano'
+      this.pianoVolumeValue = this.volumeActivation(this.pianoVolumeValue)
+      this.updatePianoVolume()
     })
     this.$nuxt.$on('launch-bells', () => {
       this.currentSelection = 'bells'
+      this.bellsVolumeValue = this.volumeActivation(this.bellsVolumeValue)
+      this.updateBellsVolume()
     })
     this.$nuxt.$on('launch-gtr', () => {
       this.currentSelection = 'gtr'
+      this.gtrVolumeValue = this.volumeActivation(this.gtrVolumeValue)
+      this.updateGtrVolume()
     })
     this.$nuxt.$on('launch-rhodes', () => {
       this.currentSelection = 'rhodes'
+      this.rhodesVolumeValue = this.volumeActivation(this.rhodesVolumeValue)
+      this.updateRhodesVolume()
     })
     this.$nuxt.$on('launch-strings', () => {
       this.currentSelection = 'strings'
+      this.stringsVolumeValue = this.volumeActivation(this.stringsVolumeValue)
+      this.updateStringsVolume()
     })
     this.$nuxt.$on('launch-textures', () => {
       this.currentSelection = 'textures'
     })
     this.$nuxt.$on('launch-toypiano', () => {
       this.currentSelection = 'toypiano'
+      this.toypianoVolumeValue = this.volumeActivation(this.toypianoVolumeValue)
+      this.updatePianoVolume()
     })
   },
 
@@ -528,9 +584,14 @@ export default {
       }
       return vol
     },
+    volumeActivation(vol) {
+      if (vol === -28) {
+        return 0
+      }
+      return vol
+    },
     updateDrumsVolume() {
       this.drumsVolume.set({ volume: this.volumeSetter(this.drumsVolumeValue) })
-      this.$nuxt.$emit('launch-drums')
     },
     updatePianoVolume() {
       this.pianoVolume.set({
@@ -543,27 +604,22 @@ export default {
           (1 - this.propPianoToypiano) * this.pianoVolumeValue
         ),
       })
-      this.$nuxt.$emit('launch-piano')
     },
     updateBellsVolume() {
       this.bellsVolume.set({ volume: this.volumeSetter(this.bellsVolumeValue) })
-      this.$nuxt.$emit('launch-bells')
     },
     updateGtrVolume() {
       this.gtrVolume.set({ volume: this.volumeSetter(this.gtrVolumeValue) })
-      this.$nuxt.$emit('launch-gtr')
     },
     updateRhodesVolume() {
       this.rhodesVolume.set({
         volume: this.volumeSetter(this.rhodesVolumeValue),
       })
-      this.$nuxt.$emit('launch-rhodes')
     },
     updateStringsVolume() {
       this.stringsVolume.set({
         volume: this.volumeSetter(this.stringsVolumeValue),
       })
-      this.$nuxt.$emit('launch-strings')
     },
     // bells
     updateBellsReverbWet() {
@@ -792,6 +848,7 @@ export default {
 
         this.tone.Transport.start()
         this.tone.start()
+        this.toneLoaded = true
         console.log('ToneJS loaded')
       })
     },
