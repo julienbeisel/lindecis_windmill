@@ -65,7 +65,7 @@
               :interval="0.1"
               :width="20"
               :height="50"
-              @dragging="(evt) => this.updatePianoVolume(evt)"
+              @dragging="(evt) => updatePianoVolume(evt)"
             />
           </div>
           <div :class="effectClass">
@@ -534,10 +534,14 @@ export default {
     },
     updatePianoVolume() {
       this.pianoVolume.set({
-        volume: this.volumeSetter(this.pianoVolumeValue),
+        volume: this.volumeSetter(
+          this.propPianoToypiano * this.pianoVolumeValue
+        ),
       })
       this.toypianoVolume.set({
-        volume: this.volumeSetter(this.pianoVolumeValue),
+        volume: this.volumeSetter(
+          (1 - this.propPianoToypiano) * this.pianoVolumeValue
+        ),
       })
       this.$nuxt.$emit('launch-piano')
     },
