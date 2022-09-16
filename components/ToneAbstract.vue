@@ -55,6 +55,20 @@
 
         <div v-if="currentSelection == 'piano'" :class="effectContainerClass">
           <div :class="effectClass">
+            <div :class="labelEffectClass">Piano/Toypiano</div>
+            <vue-slider
+              v-model="propPianoToypiano"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => this.updatePianoVolume(evt)"
+            />
+          </div>
+          <div :class="effectClass">
             <div :class="labelEffectClass">Phaser</div>
             <vue-slider
               v-model="pianoPhaserWet"
@@ -85,6 +99,194 @@
           </div>
         </div>
 
+        <div v-if="currentSelection == 'gtr'" :class="effectContainerClass">
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Delay</div>
+            <vue-slider
+              v-model="gtrDelayWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateGtrDelayWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="gtrReverbWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateGtrReverbWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Vibrato</div>
+            <vue-slider
+              v-model="gtrVibratoWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateGtrVibratoWet(evt)"
+            />
+          </div>
+        </div>
+
+        <div v-if="currentSelection == 'rhodes'" :class="effectContainerClass">
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Delay</div>
+            <vue-slider
+              v-model="rhodesPingPongDelayWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateRhodesPingPongDelayWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Filter</div>
+            <vue-slider
+              v-model="rhodesFilterWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateRhodesFilterWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Vibrato</div>
+            <vue-slider
+              v-model="rhodesVibratoWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateRhodesVibratoWet(evt)"
+            />
+          </div>
+        </div>
+
+        <div v-if="currentSelection == 'strings'" :class="effectContainerClass">
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Reverb</div>
+            <vue-slider
+              v-model="stringsReverbWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateStringsReverbWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Bitcrusher</div>
+            <vue-slider
+              v-model="stringsBitcrusherWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateStringsBitcrusherWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Vibrato</div>
+            <vue-slider
+              v-model="stringsVibratoWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateStringsVibratoWet(evt)"
+            />
+          </div>
+        </div>
+
+        <div v-if="currentSelection == 'drums'" :class="effectContainerClass">
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Frequency</div>
+            <vue-slider
+              v-model="drumsFrequencyShifterWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateDrumsFrequencyShifterWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Autofilter</div>
+            <vue-slider
+              v-model="drumsAutofilterWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateDrumsAutofilterWet(evt)"
+            />
+          </div>
+
+          <div :class="effectClass">
+            <div :class="labelEffectClass">Autowah</div>
+            <vue-slider
+              v-model="drumsAutowahWet"
+              :class="sliderEffectClass"
+              direction="btt"
+              :min="0"
+              :max="1"
+              :interval="0.1"
+              :width="20"
+              :height="50"
+              @dragging="(evt) => updateDrumsAutowahWet(evt)"
+            />
+          </div>
+        </div>
+
         <div :class="subContainerClass">
           <div :class="padClass">
             <Pad
@@ -95,7 +297,7 @@
             <vue-slider
               v-model="drumsVolumeValue"
               :max="0"
-              :min="-50"
+              :min="-28"
               :width="20"
               direction="btt"
               @dragging="(evt) => updateDrumsVolume(evt)"
@@ -110,7 +312,7 @@
             <vue-slider
               v-model="pianoVolumeValue"
               :max="0"
-              :min="-50"
+              :min="-28"
               :width="20"
               direction="btt"
               @dragging="(evt) => updatePianoVolume(evt)"
@@ -125,7 +327,7 @@
             <vue-slider
               v-model="bellsVolumeValue"
               :max="0"
-              :min="-50"
+              :min="-28"
               :width="20"
               direction="btt"
               @dragging="(evt) => updateBellsVolume(evt)"
@@ -140,7 +342,7 @@
             <vue-slider
               v-model="gtrVolumeValue"
               :max="0"
-              :min="-50"
+              :min="-28"
               :width="20"
               direction="btt"
               @dragging="(evt) => updateGtrVolume(evt)"
@@ -155,7 +357,7 @@
             <vue-slider
               v-model="rhodesVolumeValue"
               :max="0"
-              :min="-50"
+              :min="-28"
               :width="20"
               direction="btt"
               @dragging="(evt) => updateRhodesVolume(evt)"
@@ -170,7 +372,7 @@
             <vue-slider
               v-model="stringsVolumeValue"
               :max="0"
-              :min="-50"
+              :min="-28"
               :width="20"
               direction="btt"
               @dragging="(evt) => updateStringsVolume(evt)"
@@ -216,21 +418,23 @@ export default {
       heightSlider: 150,
       drums: null,
       drumsVolume: null,
-      drumsVolumeValue: -50,
-      drumsBitcrusher: null,
-      drumsBitcrusherWet: 0,
-      drumsRevers: null,
-      drumsReverbWet: 0,
+      drumsVolumeValue: -28,
+      drumsFrequencyShifter: null,
+      drumsFrequencyShifterWet: 0,
+      drumsAutofilter: null,
+      drumsAutofilterWet: 0,
+      drumsAutowah: null,
+      drumsAutowahWet: 0,
       piano: null,
       pianoVolume: null,
-      pianoVolumeValue: -50,
+      pianoVolumeValue: -28,
       pianoPhaser: null,
       pianoPhaserWet: 0,
       pianoVibrato: null,
       pianoVibratoWet: 0,
       bells: null,
       bellsVolume: null,
-      bellsVolumeValue: -50,
+      bellsVolumeValue: -28,
       bellsReverb: null,
       bellsReverbWet: 0,
       bellsBitcrusher: null,
@@ -239,21 +443,40 @@ export default {
       bellsVibratoWet: 0,
       gtr: null,
       gtrVolume: null,
-      gtrVolumeValue: -50,
+      gtrVolumeValue: -28,
+      gtrDelay: null,
+      gtrDelayWet: 0,
+      gtrReverb: null,
+      gtrReverbWet: 0,
+      gtrVibrato: null,
+      gtrVibratoWet: 0,
       rhodes: null,
       rhodesVolume: null,
-      rhodesVolumeValue: -50,
+      rhodesVolumeValue: -28,
+      rhodesPingPongDelay: null,
+      rhodesPingPongDelayWet: 0,
+      rhodesFilter: null,
+      rhodesFilterWet: 0,
+      rhodesVibrato: null,
+      rhodesVibratoWet: 0,
       strings: null,
       stringsVolume: null,
-      stringsVolumeValue: -50,
+      stringsVolumeValue: -28,
+      stringsReverb: null,
+      stringsReverbWet: 0,
+      stringsBitcrusher: null,
+      stringsBitcrusherWet: 0,
+      stringsVibrato: null,
+      stringsVibratoWet: 0,
       textures: null,
       texturesVolume: null,
       texturesVolumeValue: -5,
       toypiano: null,
       toypianoVolume: null,
-      toypianoVolumeValue: -50,
+      toypianoVolumeValue: -28,
       toypianoPhaser: null,
       toypianoVibrato: null,
+      propPianoToypiano: 0.5,
       padClass: 'flex flex-row col-span-1 m-2 lg:m-6',
       effectClass: 'flex flex-col col-span-1',
       effectTrackNameClass:
@@ -300,7 +523,7 @@ export default {
   methods: {
     // volume
     volumeSetter(vol) {
-      if (vol === -50) {
+      if (vol === -28) {
         return -Infinity
       }
       return vol
@@ -310,9 +533,11 @@ export default {
       this.$nuxt.$emit('launch-drums')
     },
     updatePianoVolume() {
-      this.pianoVolume.set({ volume: this.volumeSetter(this.pianoVolumeValue) })
+      this.pianoVolume.set({
+        volume: this.volumeSetter(this.pianoVolumeValue),
+      })
       this.toypianoVolume.set({
-        volume: this.volumeSetter(this.toypianoVolumeValue),
+        volume: this.volumeSetter(this.pianoVolumeValue),
       })
       this.$nuxt.$emit('launch-piano')
     },
@@ -355,6 +580,51 @@ export default {
       this.pianoVibrato.set({ wet: this.pianoVibratoWet })
       this.toypianoVibrato.set({ wet: this.pianoVibratoWet })
     },
+    // gtr
+    updateGtrDelayWet() {
+      this.gtrDelay.set({ wet: this.gtrVibratoWet })
+    },
+    updateGtrReverbWet() {
+      this.gtrReverb.set({ wet: this.gtrReverbWet })
+    },
+    updateGtrVibratoWet() {
+      this.gtrVibrato.set({ wet: this.gtrVibratoWet })
+    },
+    // rhodes
+
+    updateRhodesPingPongDelayWet() {
+      this.rhodesPingPongDelay.set({ wet: this.rhodesPingPongDelayWet })
+    },
+    updateRhodesFilterWet() {
+      this.rhodesFilter.set({ wet: this.rhodesFilterWet })
+    },
+    updateRhodesVibratoWet() {
+      this.rhodesVibrato.set({ wet: this.rhodesVibratoWet })
+    },
+
+    // strings
+
+    updateStringsReverbWet() {
+      this.stringsReverb.set({ wet: this.stringsReverbWet })
+    },
+    updateStringsBitcrusherWet() {
+      this.stringsBitcrusher.set({ wet: this.stringsBitcrusherWet })
+    },
+    updateStringsVibratoWet() {
+      this.stringsVibrato.set({ wet: this.stringsVibratoWet })
+    },
+
+    // drums
+
+    updateDrumsFrequencyShifterWet() {
+      this.drumsFrequencyShifter.set({ wet: this.drumsFrequencyShifterWet })
+    },
+    updateDrumsAutofilterWet() {
+      this.drumsAutofilter.set({ wet: this.drumsAutofilterWet })
+    },
+    updateDrumsAutowahWet() {
+      this.drumsAutowah.set({ wet: this.drumsAutowahWet })
+    },
 
     async firstStart() {
       this.tone = await import('tone')
@@ -390,11 +660,50 @@ export default {
       this.toypianoPhaser = new this.tone.Vibrato()
       this.updatePianoPhaserWet()
 
+      // gtr
+
+      this.gtrDelay = new this.tone.Delay(0.1)
+      this.updateGtrDelayWet()
+      this.gtrReverb = new this.tone.Reverb(reverbDefaultValue)
+      this.updateGtrReverbWet()
+      this.gtrVibrato = new this.tone.Vibrato()
+      this.updateGtrVibratoWet()
+
+      // rhodes
+
+      this.rhodesPingPongDelay = new this.tone.PingPongDelay('4n', 0.2)
+      this.updateRhodesPingPongDelayWet()
+      this.rhodesFilter = new this.tone.AutoFilter('4n')
+      this.updateRhodesFilterWet()
+      this.rhodesVibrato = new this.tone.Vibrato()
+      this.updateRhodesVibratoWet()
+
+      // strings
+
+      this.stringsReverb = new this.tone.Reverb(reverbDefaultValue)
+      this.updateStringsReverbWet()
+      this.stringsBitcrusher = new this.tone.BitCrusher(bitcrusherDefaultValue)
+      this.updateStringsBitcrusherWet()
+      this.stringsVibrato = new this.tone.Vibrato()
+      this.updateStringsVibratoWet()
+
+      // drums
+
+      this.drumsFrequencyShifter = new this.tone.FrequencyShifter(45)
+      this.updateDrumsFrequencyShifterWet()
+      this.drumsAutofilter = new this.tone.AutoFilter('4n')
+      this.updateDrumsAutofilterWet()
+      this.drumsAutowah = new this.tone.AutoWah(50, 6, -30)
+      this.updateDrumsAutowahWet()
+
       this.drums = await new this.tone.Player({
         url: DRUMS,
       }).sync()
 
-      this.drums.connect(this.drumsVolume)
+      this.drums.connect(this.drumsFrequencyShifter)
+      this.drumsFrequencyShifter.connect(this.drumsAutofilter)
+      this.drumsAutofilter.connect(this.drumsAutowah)
+      this.drumsAutowah.connect(this.drumsVolume)
       this.drumsVolume.toDestination()
 
       this.piano = await new this.tone.Player({
@@ -420,21 +729,30 @@ export default {
         url: GUITAR,
       }).sync()
 
-      this.gtr.connect(this.gtrVolume)
+      this.gtr.connect(this.gtrDelay)
+      this.gtrDelay.connect(this.gtrReverb)
+      this.gtrReverb.connect(this.gtrVibrato)
+      this.gtrVibrato.connect(this.gtrVolume)
       this.gtrVolume.toDestination()
 
       this.rhodes = await new this.tone.Player({
         url: RHODES,
       }).sync()
 
-      this.rhodes.connect(this.rhodesVolume)
+      this.rhodes.connect(this.rhodesPingPongDelay)
+      this.rhodesPingPongDelay.connect(this.rhodesFilter)
+      this.rhodesFilter.connect(this.rhodesVibrato)
+      this.rhodesVibrato.connect(this.rhodesVolume)
       this.rhodesVolume.toDestination()
 
       this.strings = await new this.tone.Player({
         url: STRING,
       }).sync()
 
-      this.strings.connect(this.stringsVolume)
+      this.strings.connect(this.stringsReverb)
+      this.stringsReverb.connect(this.stringsBitcrusher)
+      this.stringsBitcrusher.connect(this.stringsVibrato)
+      this.stringsVibrato.connect(this.stringsVolume)
       this.stringsVolume.toDestination()
 
       this.textures = await new this.tone.Player({
