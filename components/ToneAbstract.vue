@@ -17,6 +17,7 @@
             <Pad
               :evtEmit="'launch-drums'"
               :imgSrc="require('~/assets/drums.png')"
+              :imgSrcWhite="require('~/assets/drums-white.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
           </div>
@@ -24,6 +25,7 @@
             <Pad
               :evtEmit="'launch-piano'"
               :imgSrc="require('~/assets/piano.png')"
+              :imgSrcWhite="require('~/assets/piano-white.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
           </div>
@@ -31,6 +33,7 @@
             <Pad
               :evtEmit="'launch-bells'"
               :imgSrc="require('~/assets/bell.png')"
+              :imgSrcWhite="require('~/assets/bell-white.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
           </div>
@@ -38,6 +41,7 @@
             <Pad
               :evtEmit="'launch-gtr'"
               :imgSrc="require('~/assets/guitar.png')"
+              :imgSrcWhite="require('~/assets/guitar-white.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
           </div>
@@ -45,6 +49,7 @@
             <Pad
               :evtEmit="'launch-rhodes'"
               :imgSrc="require('~/assets/rhodes.png')"
+              :imgSrcWhite="require('~/assets/rhodes-white.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
           </div>
@@ -52,6 +57,7 @@
             <Pad
               :evtEmit="'launch-strings'"
               :imgSrc="require('~/assets/violin.png')"
+              :imgSrcWhite="require('~/assets/violin-white.png')"
               class="col-span-1 mx-auto content-center w-4/5"
             />
           </div>
@@ -588,7 +594,7 @@ export default {
       if (vol === -28) {
         return 0
       }
-      return vol
+      return -28
     },
     updateDrumsVolume() {
       this.drumsVolume.set({ volume: this.volumeSetter(this.drumsVolumeValue) })

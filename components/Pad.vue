@@ -1,31 +1,30 @@
 <template>
   <button
     @click="emitEvt()"
-    class="text-lg m-auto text-lg hover:opacity-100 hover:bg-gray-100 rounded-md transition duration-150 ease-in-out"
-    :class="mutedClass"
+    class="text-lg m-auto text-lg hover:opacity-100 hover:bg-gray-20 rounded-md transition duration-150 ease-in-out"
   >
-    <img :src="imgSrc" class="object-scale-down h-16 m-auto" />
+    <img
+      v-if="!activated"
+      :src="imgSrc"
+      class="object-scale-down h-16 m-auto"
+    />
+    <img v-else :src="imgSrcWhite" class="object-scale-down h-16 m-auto" />
   </button>
 </template>
 
 <script>
 export default {
   name: 'PadMute',
-  props: ['imgSrc', 'evtEmit'],
+  props: ['imgSrc', 'imgSrcWhite', 'evtEmit'],
   data() {
     return {
-      mutedClass: 'bg-transparent',
+      activated: false,
     }
   },
   methods: {
     emitEvt() {
       this.$nuxt.$emit(this.evtEmit)
-
-      if (this.mutedClass === 'bg-transparent') {
-        this.mutedClass = 'bg-gray-100'
-      } else {
-        this.mutedClass = 'bg-transparent'
-      }
+      this.activated = !this.activated
     },
   },
 }
